@@ -39,6 +39,8 @@ export class Restaurant {
         required: true
     })
     location: GeoPoint;
+
+    distance?: number;
 }
 
 export const RestaurantsSchema = SchemaFactory.createForClass(Restaurant);
