@@ -4,6 +4,7 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {UsersModule} from './modules/users/users.module';
 import {ValidationError} from "class-validator";
 import {ValidationException} from "./common/exceptions/validation.exception";
+import { RestaurantsModule } from './modules/restaurants/restaurants.module';
 
 @Module({
     imports: [
@@ -16,7 +17,8 @@ import {ValidationException} from "./common/exceptions/validation.exception";
             }),
             inject: [ConfigService]
         }),
-        UsersModule
+        UsersModule,
+        RestaurantsModule,
     ],
     providers: [
         {
