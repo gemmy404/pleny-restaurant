@@ -9,6 +9,7 @@ import {constructPagination} from "../../common/utils/pagination.util";
 import {GetRestaurantsQueryDto} from "./dto/get-restaurants-query.dto";
 import {isValidObjectId, Types} from "mongoose";
 import {Restaurant} from "./schemas/restaurants.schema";
+import {NearbyRestaurantQueryDto} from "./dto/nearby-restaurant-query.dto";
 
 @Injectable()
 export class RestaurantsService {
@@ -68,6 +69,20 @@ export class RestaurantsService {
         const appResponse: AppResponseDto<RestaurantResponseDto> = {
             status: HttpStatusText.SUCCESS,
             data: RestaurantsMapper.toRestaurantResponseDto(savedRestaurant)
+        };
+
+        return appResponse;
+    }
+
+    async findNearbyRestaurants(
+        nearbyRestaurantsQuery: NearbyRestaurantQueryDto
+    ): Promise<AppResponseDto<RestaurantResponseDto[]>> {
+        const nearbyRestaurants = await this.restaurantsRepository
+            .findNearbyRestaurants({lng: nearbyRestaurantsQuery.lng, lat: nearbyRestaurantsQuery.lat});
+
+        const appResponse: AppResponseDto<RestaurantResponseDto[]> = {
+            status: HttpStatusText.SUCCESS,
+            data: nearbyRestaurants.map(RestaurantsMapper.toRestaurantResponseDto)
         };
 
         return appResponse;

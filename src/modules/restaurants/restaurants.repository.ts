@@ -37,4 +37,20 @@ export class RestaurantsRepository {
         return this.restaurantModel.findOne({slug});
     }
 
+    async findNearbyRestaurants(location: { lng: number, lat: number }) {
+        return this.restaurantModel.aggregate([
+            {
+                $geoNear: {
+                    near: {
+                        type: 'Point',
+                        coordinates: [location.lng, location.lat]
+                    },
+                    distanceField: 'distance',
+                    maxDistance: 1000,
+                    spherical: true
+                }
+            }
+        ]);
+    }
+
 }
