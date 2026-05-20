@@ -2,6 +2,8 @@ import {Module, ValidationPipe} from '@nestjs/common';
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {MongooseModule} from "@nestjs/mongoose";
 import {UsersModule} from './modules/users/users.module';
+import {ValidationError} from "class-validator";
+import {ValidationException} from "./common/exceptions/validation.exception";
 
 @Module({
     imports: [
@@ -23,6 +25,18 @@ import {UsersModule} from './modules/users/users.module';
                 whitelist: true,
                 forbidNonWhitelisted: true,
                 transform: true,
+                exceptionFactory: (errors: ValidationError[]) => {
+                    const extractErrors = (errorList: ValidationError[]) => {
+                        return errorList.flatMap((err: ValidationError) => {
+                            const constraints: string[] = err.constraints ? Object.values(err.constraints) : [];
+                            const childErrors: string[] = err.children ? extractErrors(err.children) : [];
+                            return [...constraints, ...childErrors];
+                        });
+                    };
+                    const messages: string[] = extractErrors(errors);
+
+                    return new ValidationException(messages, 400);
+                },
             }),
         }
     ]
