@@ -4,12 +4,16 @@ import {RestaurantFollowsController} from './restaurant-follows.controller';
 import {MongooseModule} from "@nestjs/mongoose";
 import {UserRestaurantFollow, UserRestaurantFollowSchema} from "./schemas/restaurant-follow.schema";
 import {RestaurantFollowsRepository} from "./restaurant-follows.repository";
+import {UsersModule} from "../users/users.module";
+import {RestaurantsModule} from "../restaurants/restaurants.module";
 
 @Module({
     imports: [
         MongooseModule.forFeature([
             {name: UserRestaurantFollow.name, schema: UserRestaurantFollowSchema}
         ]),
+        UsersModule,
+        RestaurantsModule,
     ],
     controllers: [RestaurantFollowsController],
     providers: [RestaurantFollowsRepository, RestaurantFollowsService],
