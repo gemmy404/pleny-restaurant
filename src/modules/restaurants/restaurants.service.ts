@@ -1,4 +1,4 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {ConflictException, Injectable, NotFoundException} from '@nestjs/common';
 import {RestaurantsRepository} from "./restaurants.repository";
 import {CreateRestaurantRequestDto} from "./dto/create-restaurant-request.dto";
 import {AppResponseDto} from "../../common/dto/app-response.dto";
@@ -20,6 +20,12 @@ export class RestaurantsService {
     async createRestaurant(
         createRestaurantRequest: CreateRestaurantRequestDto
     ): Promise<AppResponseDto<RestaurantResponseDto>> {
+        const existingRestaurant = await this.restaurantsRepository
+            .findRestaurantBySlug(createRestaurantRequest.slug);
+        if (existingRestaurant) {
+            throw new ConflictException('Restaurant with this slug already exists');
+        }
+
         const createdRestaurant = await this.restaurantsRepository
             .createRestaurant(createRestaurantRequest);
 

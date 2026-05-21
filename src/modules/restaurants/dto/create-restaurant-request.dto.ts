@@ -8,6 +8,10 @@ export class CreateRestaurantRequestDto {
     @ApiProperty({
         type: LocalizedNameDto,
         required: true,
+        example: {
+            en: 'Burger House',
+            ar: 'برجر هاوس'
+        }
     })
     @IsNotEmpty({message: 'Name is required'})
     @ValidateNested()
@@ -17,6 +21,7 @@ export class CreateRestaurantRequestDto {
     @ApiProperty({
         type: String,
         required: true,
+        example: 'burger-house'
     })
     @IsNotEmpty({message: 'Slug is required'})
     @IsString({message: 'Slug must be a string'})
@@ -28,6 +33,7 @@ export class CreateRestaurantRequestDto {
     @ApiProperty({
         type: [String],
         required: true,
+        example: ['Burgers', 'Fast Food']
     })
     @IsArray({message: 'Cuisine must be an array'})
     @ArrayMinSize(1, {message: 'At least one cuisine is required'})
@@ -42,7 +48,11 @@ export class CreateRestaurantRequestDto {
 
     @ApiProperty({
         type: GeoPointDto,
-        required: true
+        required: true,
+        example: {
+            type: 'Point',
+            coordinates: [31.2357, 30.0444]
+        }
     })
     @IsNotEmpty({message: 'Location is required'})
     @ValidateNested()
