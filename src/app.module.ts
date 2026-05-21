@@ -4,7 +4,9 @@ import {MongooseModule} from "@nestjs/mongoose";
 import {UsersModule} from './modules/users/users.module';
 import {ValidationError} from "class-validator";
 import {ValidationException} from "./common/exceptions/validation.exception";
-import { RestaurantsModule } from './modules/restaurants/restaurants.module';
+import {RestaurantsModule} from './modules/restaurants/restaurants.module';
+import {RestaurantFollowsModule} from './modules/restaurant-follows/restaurant-follows.module';
+import {RecommendationsModule} from './modules/recommendations/recommendations.module';
 
 @Module({
     imports: [
@@ -19,6 +21,8 @@ import { RestaurantsModule } from './modules/restaurants/restaurants.module';
         }),
         UsersModule,
         RestaurantsModule,
+        RestaurantFollowsModule,
+        RecommendationsModule,
     ],
     providers: [
         {
