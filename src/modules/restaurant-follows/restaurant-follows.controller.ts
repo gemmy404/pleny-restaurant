@@ -5,19 +5,26 @@ import {Types} from "mongoose";
 import {ParseObjectIdPipe} from "@nestjs/mongoose";
 import {AppResponseDto} from "../../common/dto/app-response.dto";
 import {MyFollowedRestaurantResponseDto} from "./dto/my-followed-restaurant-response.dto";
+import {ApiResponse, ApiTags} from "@nestjs/swagger";
+import {FollowRestaurantResponseDto} from "./dto/follow-restaurant-response.dto";
 
 @Controller('api/v1/restaurant-follows')
+@ApiTags('Restaurant Follows')
 export class RestaurantFollowsController {
 
     constructor(private readonly restaurantFollowsService: RestaurantFollowsService) {
     }
 
     @Post()
-    followRestaurant(@Body() followRestaurantRequest: FollowRestaurantRequestDto) {
+    @ApiResponse({type: FollowRestaurantResponseDto})
+    followRestaurant(
+        @Body() followRestaurantRequest: FollowRestaurantRequestDto
+    ): Promise<AppResponseDto<FollowRestaurantResponseDto>> {
         return this.restaurantFollowsService.followRestaurant(followRestaurantRequest);
     }
 
     @Get('user/:userId')
+    @ApiResponse({type: [MyFollowedRestaurantResponseDto]})
     findMyFollowedRestaurants(
         @Param('userId', ParseObjectIdPipe) userId: Types.ObjectId,
     ): Promise<AppResponseDto<MyFollowedRestaurantResponseDto[]>> {
