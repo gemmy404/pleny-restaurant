@@ -6,5 +6,6 @@ export class RecommendationResponseDto {
     @ApiProperty({type: UserResponseDto})
     similarUsers: UserResponseDto;
 
+    @ApiProperty({type: [RestaurantResponseDto]})
     recommendedRestaurants: Partial<RestaurantResponseDto>[];
 }

@@ -1,6 +1,6 @@
 import {Body, Controller, Get, Param, Post, Query} from '@nestjs/common';
 import {RestaurantsService} from './restaurants.service';
-import {ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {CreateRestaurantRequestDto} from "./dto/create-restaurant-request.dto";
 import {GetRestaurantsQueryDto} from "./dto/get-restaurants-query.dto";
 import {AppResponseDto} from "../../common/dto/app-response.dto";
@@ -15,7 +15,10 @@ export class RestaurantsController {
     }
 
     @Post()
-    createRestaurant(@Body() createRestaurantRequest: CreateRestaurantRequestDto) {
+    @ApiResponse({type: RestaurantResponseDto})
+    createRestaurant(
+        @Body() createRestaurantRequest: CreateRestaurantRequestDto
+    ): Promise<AppResponseDto<RestaurantResponseDto>> {
         return this.restaurantsService.createRestaurant(createRestaurantRequest);
     }
 
@@ -38,6 +41,11 @@ export class RestaurantsController {
     // Endpoint to find a restaurant by ID or slug
     @Get(':identifier')
     @ApiResponse({type: RestaurantResponseDto})
+    @ApiParam({
+        name: 'identifier',
+        description: 'The ID or slug of the restaurant',
+        type: String,
+    })
     findRestaurant(
         @Param('identifier') identifier: string
     ): Promise<AppResponseDto<RestaurantResponseDto>> {

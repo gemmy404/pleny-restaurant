@@ -1,6 +1,11 @@
 import {IsNotEmpty, IsString, Length} from "class-validator";
+import {ApiProperty} from "@nestjs/swagger";
 
 export class LocalizedNameDto {
+    @ApiProperty({
+        type: String,
+        required: true,
+    })
     @IsNotEmpty({message: 'Arabic Name is required'})
     @IsString({message: 'Arabic Name must be a string'})
     @Length(1, 50, {
@@ -8,6 +13,10 @@ export class LocalizedNameDto {
     })
     ar: string;
 
+    @ApiProperty({
+        type: String,
+        required: true,
+    })
     @IsNotEmpty({message: 'English Name is required'})
     @IsString({message: 'English Name must be a string'})
     @Length(1, 50, {
